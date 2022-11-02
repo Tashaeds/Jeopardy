@@ -1,5 +1,5 @@
 const play = document.getElementById ("play")
-const score = document.getElementById ("score")
+const scoreDisplay = document.getElementById ("score")
 // apply categories
 
 const triviaCategories = [
@@ -11,10 +11,10 @@ const triviaCategories = [
         question: "What is the name of the colour that is made by combining red and blue?",
         answers: ["Purple", "Torquoise", "Brown"],
         correct: "Purple",
-        level :"easy",
+        level : "easy",
       },
       {
-        question: "What is the world’s most popular favorite colour?",
+        question: "What is the world's most popular favorite colour?",
         answers: ["Blue", "Green", "Red"],
         correct: "Blue",
         level: "medium"
@@ -46,8 +46,8 @@ const triviaCategories = [
       },
       {
         question: "What movie features the line: “You can’t handle the truth!”?",
-        answers: ["A few good men", "Wolf on Wall Street", "Top Gun"],
-        correct: "A few Good men",
+        answers: ["A Few Good Men", "Wolf on Wall Street", "Top Gun"],
+        correct: "A Few Good Men",
         level: "hard"
       }
     ]
@@ -137,8 +137,8 @@ const triviaCategories = [
    [
       {
         question: "What does it mean if a meeting is held “sub rosa”?",
-        answers: ["At night", "Before dawn", "In secret",  ],
-        correct: "In Secret",
+        answers: ["At night", "Before dawn", "In secret" ],
+        correct: "In secret",
         level: "easy"
 
       },
@@ -150,9 +150,9 @@ const triviaCategories = [
 
       },
       {
-        question: "What (a) is the act of washing clean?",
-        answers: ["Abolition", "Arbitration", "Ablutions"],
-        Correct: "Ablutions",
+        question: "How many bones do we have in our ear?",
+        answers: ["Five", "Two", "Three"],
+        Correct: "Three",
         level:"hard"
 
       },
@@ -161,46 +161,117 @@ const triviaCategories = [
 ]
 
 //add categories
+
+let score = 0
+
 function  addCategory(category) {
 const column = document.createElement ("div")
 column.classList.add("genre-column")
 
 const genreHeading = document.createElement("div")
-genreHeading.classList.add("genreheading")
-genreHeading.innerHTML = category.genre
-
+genreHeading.classList.add("genre-heading")
+genreHeading.innerText = category.genre
 
 column.appendChild(genreHeading)
 play.append(column)
-}
- 
-  category.questions.forEach(question =>{
-   const card = document.createElement(div) 
-   card.classList.add ("card")
-   column.append (card)
 
-   if (question.level === "easy"){
-    card.innerHTML = 200
+category.questions.forEach (question => {
+const card = document.createElement("div") 
+card.classList.add ("card")
+column.append (card)
+
+  
+  if (question.level === "easy"){
+      card.innerHTML = 200
+    
    }
 
    if (question.level === "medium"){
     card.innerHTML = 400
    }
 
-   if (question.level ==="hard"){
+   if (question.level === "hard"){
     card.innerHTML = 600
+   }
+   
+   card.setAttribute ("data-question", question.question)
 
-// add questions, answers and scores to the game
-    card.setAttribute ("data-question", question.question)
-    card.setAttribute ("data-answer 1", question.answers[0])
-    card.setAttribute ("data-answer 2", question.answers[1])
-    card.setAttribute ("data-answer 3", question.answers[2])
-    card.setAttribute ("data-correct", question.correct)
-    card.setAttribute ("data-value", card.getInnerHTML ())
-    }})
-    
-    card.addEventListener("click", flipcard )
+   card.setAttribute ("data-answer-1", question.answers[0] )
 
-    triviaCategories.forEach(category => addCategory(category))
+   card.setAttribute ("data-answer-2", question.answers[1] )
 
-    
+   card.setAttribute ("data-answer-3", question.answers[2] )
+
+   card.setAttribute ("data-correct", question.correct)
+
+   card.setAttribute ("data-value", card.getInnerHTML ())
+
+   card.addEventListener("click", flipCard)
+
+})
+}
+triviaCategories.forEach(category => addCategory(category))
+
+
+function flipCard() {
+  this.innerHTML = ""
+  this.style.fontSize = "15px"
+  this.style.lineHeight = "17px"
+  const textDisplay = document.createElement ("div")
+  textDisplay.classList.add ("card-text")
+  textDisplay.innerHTML = this.getAttribute("data-question")
+  document.createElement ("div").classList.add("card")
+  const firstButton = document.createElement("button")
+  const secondButton = document.createElement("button")
+  const thirdButton = document.createElement("button")
+  firstButton.classList.add("first-button")
+  secondButton.classList.add("second-button")
+  thirdButton.classList.add("third-button")
+  firstButton.innerHTML = this.getAttribute ("data-answer-1")
+  secondButton.innerHTML = this.getAttribute ("data-answer-2")
+  thirdButton.innerHTML = this.getAttribute ("data-answer-3")
+  firstButton.addEventListener("click", getResult)
+  secondButton.addEventListener("click", getResult)
+  thirdButton.addEventListener("click", getResult)
+  this.append(textDisplay, firstButton, secondButton, thirdButton)
+
+  const allCards = Array.from(document.querySelectorAll("card"))
+  allCards.forEach(card => card.removeEventListener("click", flipCard)
+    )
+   }
+  
+  function getResult() {
+    const allCards =Array.from(document.querySelectorAll(".card"))
+    allCards.forEach(card => card.addEventListener ("click", flipCard))
+
+    const cardOfButton = this.parentElement
+  
+  if (cardOfButton.getAttribute("data-correct") == this.innerHTML) {
+  score = score + parseInt(cardOfButton.getAttribute("data-value"))
+  scoreDisplay.innerHTML = score
+  cardOfButton.classList.add("correct-answer")
+  setTimeout(() => {
+    while (cardOfButton.firstChild){
+      cardOfButton.removeChild(cardOfButton.lastChild)
+    }
+    cardOfButton.innerHTML = cardOfButton.getAttribute ("data-value")
+  }, 100)
+  
+  } else {
+    cardOfButton.classList.add ("wrong-answer")
+    setTimeout (() => {
+      while (cardOfButton.firstChild) {
+        cardOfButton.removeChild(cardOfButton.lastChild)
+    }
+    cardOfButton.innerHTML = 0
+
+  }, 100)
+}
+cardOfButton.removeEventListener ("click", flipCard )
+}
+
+
+  
+
+
+
