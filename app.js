@@ -166,10 +166,10 @@ console.log(triviaCategories)
 
 let score = 0
 
+//use forEach loop to add columns to game
 function  addCategory(category) {
 const column = document.createElement ("div")
 column.classList.add("genre-column")
-
 
 const genreHeading = document.createElement("div")
 genreHeading.classList.add("genre-heading")
@@ -178,23 +178,24 @@ genreHeading.innerText = category.genre
 column.appendChild(genreHeading)
 play.append(column)
 
-//add card attributes
+//use forEach loop to add questions to game
 category.questions.forEach (question => {
 const card = document.createElement("div") 
 card.classList.add ("card")
 column.append (card)
 
+
+
   // add data values for different levels
   if (question.level === "easy"){
       card.innerHTML = 200
-    
-   }
-
-   if (question.level === "medium"){
+    }
+  
+     if (question.level === "medium"){
     card.innerHTML = 400
    }
 
-   if (question.level === "hard"){
+      if (question.level === "hard"){
     card.innerHTML = 600
    }
    
@@ -223,26 +224,47 @@ function cardDisplay() {
   this.innerHTML = ""
   this.style.fontSize = "15px"
   this.style.lineHeight = "17px"
+
   const textDisplay = document.createElement ("div")
   textDisplay.classList.add ("card-text")
   textDisplay.innerHTML = this.getAttribute("data-question")
   document.createElement ("div").classList.add("card")
+
+  //create button elements
   const firstButton = document.createElement("button")
   const secondButton = document.createElement("button")
   const thirdButton = document.createElement("button")
+
+  // add class buttons and answers to card
   firstButton.classList.add("first-button")
   secondButton.classList.add("second-button")
   thirdButton.classList.add("third-button")
   firstButton.innerHTML = this.getAttribute ("data-answer-1")
   secondButton.innerHTML = this.getAttribute ("data-answer-2")
   thirdButton.innerHTML = this.getAttribute ("data-answer-3")
-  firstButton.addEventListener("click", getResult)
+
+  //add eventListener for Click
+  firstButton.addEventListener("click", getResult) 
   secondButton.addEventListener("click", getResult)
   thirdButton.addEventListener("click", getResult)
   this.append(textDisplay, firstButton, secondButton, thirdButton)
- 
 
-  const allCards = Array.from(document.querySelectorAll("card"))
+
+  //EventListener which console logs the clicked answers
+  firstButton.addEventListener("click", (event) => {
+    console.log(event.currentTarget.textContent);
+  });
+ 
+  secondButton.addEventListener("click", (event) => {
+    console.log(event.currentTarget.textContent);
+  });
+  
+  thirdButton.addEventListener("click", (event) => {
+    console.log(event.currentTarget.textContent);
+  });
+  
+
+  const allCards = Array.from(document.querySelectorAll(".card"))
   allCards.forEach(card => card.removeEventListener("click", cardDisplay)
     )
    }
@@ -253,18 +275,22 @@ function cardDisplay() {
 
     const cardOfButton = this.parentElement
 
+    if (cardOfButton.getAttribute("data-correct") == this.innerHTML){
+  console.log("That is correct")
+  } 
+  else {
+  console.log("Sorry, better luck next time")}
+
   if (cardOfButton.getAttribute("data-correct") == this.innerHTML) {
   score = score + parseInt(cardOfButton.getAttribute("data-value"))
   scoreDisplay.innerHTML = score
   cardOfButton.classList.add("correct-answer")
   setTimeout(() => {
-    while (cardOfButton.firstChild){
+    while (cardOfButton.cardDisplay){
       cardOfButton.removeChild(cardOfButton.lastChild)
     }
     cardOfButton.innerHTML = "Correct : <br> " + cardOfButton.getAttribute ("data-value")
   }, 100)
-  
-  
   } else {
     cardOfButton.classList.add ("wrong-answer")
     setTimeout (() => {
@@ -274,7 +300,7 @@ function cardDisplay() {
     cardOfButton.innerHTML = "0 : <br>" + "The correct answer is :" + cardOfButton.getAttribute("data-correct" )
   }, 100)
 }
-cardOfButton.removeEventListener ("click", flipCard )
+cardOfButton.removeEventListener ("click", cardDisplay )
    }
 
 
