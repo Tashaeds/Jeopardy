@@ -160,13 +160,16 @@ const triviaCategories = [
   },
 ]
 
-//add categories
+console.log(triviaCategories)
+
+//add categories, heading and array to Div.
 
 let score = 0
 
 function  addCategory(category) {
 const column = document.createElement ("div")
 column.classList.add("genre-column")
+
 
 const genreHeading = document.createElement("div")
 genreHeading.classList.add("genre-heading")
@@ -175,12 +178,13 @@ genreHeading.innerText = category.genre
 column.appendChild(genreHeading)
 play.append(column)
 
+//add card attributes
 category.questions.forEach (question => {
 const card = document.createElement("div") 
 card.classList.add ("card")
 column.append (card)
 
-  
+  // add data values for different levels
   if (question.level === "easy"){
       card.innerHTML = 200
     
@@ -202,18 +206,20 @@ column.append (card)
 
    card.setAttribute ("data-answer-3", question.answers[2] )
 
+   card.setAttribute ("data-incorrect", question.incorrect)
+
    card.setAttribute ("data-correct", question.correct)
 
    card.setAttribute ("data-value", card.getInnerHTML ())
 
-   card.addEventListener("click", flipCard)
+   card.addEventListener("click", cardDisplay)
 
 })
 }
 triviaCategories.forEach(category => addCategory(category))
 
 
-function flipCard() {
+function cardDisplay() {
   this.innerHTML = ""
   this.style.fontSize = "15px"
   this.style.lineHeight = "17px"
@@ -234,18 +240,19 @@ function flipCard() {
   secondButton.addEventListener("click", getResult)
   thirdButton.addEventListener("click", getResult)
   this.append(textDisplay, firstButton, secondButton, thirdButton)
+ 
 
   const allCards = Array.from(document.querySelectorAll("card"))
-  allCards.forEach(card => card.removeEventListener("click", flipCard)
+  allCards.forEach(card => card.removeEventListener("click", cardDisplay)
     )
    }
   
-  function getResult() {
+   function getResult() {
     const allCards =Array.from(document.querySelectorAll(".card"))
-    allCards.forEach(card => card.addEventListener ("click", flipCard))
+    allCards.forEach(card => card.addEventListener ("click", cardDisplay))
 
     const cardOfButton = this.parentElement
-  
+
   if (cardOfButton.getAttribute("data-correct") == this.innerHTML) {
   score = score + parseInt(cardOfButton.getAttribute("data-value"))
   scoreDisplay.innerHTML = score
@@ -254,24 +261,25 @@ function flipCard() {
     while (cardOfButton.firstChild){
       cardOfButton.removeChild(cardOfButton.lastChild)
     }
-    cardOfButton.innerHTML = cardOfButton.getAttribute ("data-value")
+    cardOfButton.innerHTML = "Correct : <br> " + cardOfButton.getAttribute ("data-value")
   }, 100)
+  
   
   } else {
     cardOfButton.classList.add ("wrong-answer")
     setTimeout (() => {
       while (cardOfButton.firstChild) {
         cardOfButton.removeChild(cardOfButton.lastChild)
-    }
-    cardOfButton.innerHTML = 0
-
+      }
+    cardOfButton.innerHTML = "0 : <br>" + "The correct answer is :" + cardOfButton.getAttribute("data-correct" )
   }, 100)
 }
 cardOfButton.removeEventListener ("click", flipCard )
-}
+   }
+
+
+
+
 
 
   
-
-
-

@@ -11,6 +11,8 @@ body {
   align-items: center;
   flex-direction: column;
   font-family:font-family: 'Anton', sans-serif;
+  box-sizing: border-box;
+
 }
 
 #play{
@@ -19,7 +21,7 @@ body {
 }
 
 .card {
-  width: 200px;
+  width: 150px;
   height: 130px;
   background-color: rgb(26, 26, 255);
   border-left: solid rgb(19, 19, 160) 10px;
@@ -52,9 +54,10 @@ background-color: #76B39D;
 .genre-heading{
   background-color: rgb(26, 26, 255;);
   text-align: center;
-  font-size: 28px;
+  font-size: 20px;
   padding: 5px;
   margin: 5px;
+  font-weight: 1000;
 }
 
 .correct-answer {
@@ -63,8 +66,48 @@ background-color: #76B39D;
 
 .wrong-answer{
   background-color:#CF0A0A ;
+
 }
 
-@media screen add {
+/*media query*/
+
+@media screen and (max-width: 600px) {
+  body {
+    background-color: rgb(46, 46, 46);
+    color: white;}
+
+    .play{
+
+      
+    }
+    div.card 
+    {
+      width: 60px;;
+      height: auto;
+     
+      text-align: center;
+      font-size: 10px;
+      margin: 5px;
+      padding: 10px;
+      line-height: 12px;
+    }
+
+    div.genre-column{
+      width: auto;
+      display: flex;
+      font-display:flex ;
+      flex-direction: row;
+      flex-direction: column;
+    }
+
+    div.genre-heading {
+      width: auto;
+      font-size: 10px;
+
+    }
+
+    div.card-text{
+      font-size: 15px;
+    }
+
   
-}
